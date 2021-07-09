@@ -1,4 +1,4 @@
 module.exports = {
   WELCOME: 'welcome',
-  PASSWORD_CHANGED: 'passwordChanged'
+  PASSWORD_CHANGED: 'paswordChanged'
 };
