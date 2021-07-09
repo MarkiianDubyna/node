@@ -1,4 +1,6 @@
 module.exports = {
   WELCOME: 'welcome',
-  PASSWORD_CHANGED: 'paswordChanged'
+  PASSWORD_CHANGED: 'passwordChanged',
+  USER_UPDATED: 'userUpdated',
+  USER_DELETED: 'userDeleted'
 };

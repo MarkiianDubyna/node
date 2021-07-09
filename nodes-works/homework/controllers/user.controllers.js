@@ -1,7 +1,11 @@
-const { statuseCodesEnum } = require('../constants');
-const { responseCodesEnum } = require('../constants');
+const {
+  statuseCodesEnum,
+  responseCodesEnum,
+  emailActionsEnum
+} = require('../constants');
 const { User } = require('../dataBase');
 const { passwordHasher } = require('../helpers');
+const { mailService } = require('../services');
 
 module.exports = {
   getAllUsers: async (req, res) => {
@@ -39,7 +43,12 @@ module.exports = {
 
   deleteUser: async (req, res) => {
     try {
+      const { email, name } = req.user;
+
       await User.findOneAndDelete({ _id: req.params.id });
+
+      await mailService.sendMail(email, emailActionsEnum.USER_DELETED, { userName: name });
+
       res.status(statuseCodesEnum.DELETED).json(responseCodesEnum.SUCCESS);
     } catch (err) {
       res.status(statuseCodesEnum.INCORRECT_REQUEST).json(err.message);
@@ -48,7 +57,12 @@ module.exports = {
 
   updateUser: async (req, res) => {
     try {
+      const { email, name } = req.user;
+
       await User.findOneAndUpdate({ _id: req.params.id }, req.body);
+
+      await mailService.sendMail(email, emailActionsEnum.USER_UPDATED, { userName: name });
+
       res.status(statuseCodesEnum.UPDATED).json(responseCodesEnum.SUCCESS);
     } catch (err) {
       res.status(statuseCodesEnum.INCORRECT_REQUEST).json(err.message);

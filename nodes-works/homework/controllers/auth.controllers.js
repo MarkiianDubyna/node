@@ -21,11 +21,16 @@ module.exports = {
         );
       }
 
-      const { password: hashPassword, _id, email } = req.user;
+      const {
+        password: hashPassword,
+        _id,
+        email,
+        name
+      } = req.user;
       const { password } = req.body;
 
       await passwordHasher.compare(hashPassword, password);
-      await mailService.sendMail(email, emailActionsEnum.WELCOME, { userName: 'Markiian' });
+      await mailService.sendMail(email, emailActionsEnum.WELCOME, { userName: name });
 
       const tokenPair = oAuthService.generateTokenPair();
 
